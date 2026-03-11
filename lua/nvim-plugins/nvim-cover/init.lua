@@ -54,11 +54,11 @@ return {
 					end,
 					desc = "Load and show coverage",
 				}
-				maps.n[coverage_prefix .. "v"] = {
+				maps.n[coverage_prefix .. "h"] = {
 					function()
 						require("coverage").toggle_virtual_text()
 					end,
-					desc = "Toggle virtual text hit counts",
+					desc = "Toggle hit counts",
 				}
 				maps.n[coverage_prefix .. "b"] = {
 					function()
