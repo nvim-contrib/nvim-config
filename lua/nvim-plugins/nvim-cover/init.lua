@@ -60,6 +60,12 @@ return {
 					end,
 					desc = "Toggle virtual text hit counts",
 				}
+				maps.n[coverage_prefix .. "b"] = {
+					function()
+						require("coverage").toggle_branch_overlay()
+					end,
+					desc = "Toggle branch overlay",
+				}
 
 				-- Sign navigation (] / [ convention)
 				maps.n["]Cu"] = {
