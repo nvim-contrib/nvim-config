@@ -56,7 +56,7 @@ return {
 				}
 				maps.n[coverage_prefix .. "h"] = {
 					function()
-						require("coverage").toggle_virtual_text()
+						require("coverage").toggle_hit_counts()
 					end,
 					desc = "Toggle hit counts",
 				}
