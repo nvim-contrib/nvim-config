@@ -6,44 +6,6 @@ return {
 		auto_reload = { enabled = true },
 	},
 	dependencies = {
-		{
-			"nvim-neotest/neotest",
-			optional = true,
-			opts = function(_, opts)
-				opts.consumers = opts.consumers or {}
-				-- After Go tests finish, convert coverage.out → coverage/lcov.info
-				opts.consumers.coverage_go = function(client)
-					client.listeners.results = function(_, results, partial)
-						if partial then return end
-						for _, result in pairs(results) do
-							if result.output then
-								local cwd = vim.fn.getcwd()
-								local coverprofile = cwd .. "/coverage.out"
-								local lcov_out = cwd .. "/coverage/lcov.info"
-								if vim.fn.filereadable(coverprofile) == 1 then
-									vim.fn.mkdir(cwd .. "/coverage", "p")
-									vim.fn.jobstart({
-										"go", "tool", "cover",
-										"-o", lcov_out,
-										coverprofile,
-									}, {
-										on_exit = function(_, code)
-											if code == 0 then
-												vim.schedule(function()
-													require("coverage").load(lcov_out, require("coverage.signs").is_enabled())
-												end)
-											end
-										end,
-									})
-									return
-								end
-							end
-						end
-					end
-					return {}
-				end
-			end,
-		},
 		"nvim-lua/plenary.nvim",
 		{
 			"AstroNvim/astroui",
