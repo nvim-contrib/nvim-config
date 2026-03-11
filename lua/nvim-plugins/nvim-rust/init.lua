@@ -22,14 +22,13 @@ return {
 						if cmd[1] == "cargo" then
 							local lcov_path = vim.fn.getcwd() .. "/target/lcov.info"
 							local is_nightly = vim.fn.system("rustup show active-toolchain 2>/dev/null"):match("nightly") ~= nil
-							local i = 2
-							table.insert(cmd, i, "llvm-cov") ; i = i + 1
-							table.insert(cmd, i, "--lcov")   ; i = i + 1
-							if is_nightly then
-								table.insert(cmd, i, "--branch") ; i = i + 1
+							local extra = { "llvm-cov", "--lcov" }
+							if is_nightly then table.insert(extra, "--branch") end
+							table.insert(extra, "--output-path")
+							table.insert(extra, lcov_path)
+							for j = #extra, 1, -1 do
+								table.insert(cmd, 2, extra[j])
 							end
-							table.insert(cmd, i, "--output-path") ; i = i + 1
-							table.insert(cmd, i, lcov_path)
 						end
 					end
 					return spec
