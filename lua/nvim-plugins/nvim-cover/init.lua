@@ -56,15 +56,15 @@ return {
 				}
 				maps.n[coverage_prefix .. "h"] = {
 					function()
-						require("coverage").toggle_hit_counts()
+						require("coverage").toggle_line_hits()
 					end,
-					desc = "Toggle hit counts",
+					desc = "Toggle line hits",
 				}
 				maps.n[coverage_prefix .. "b"] = {
 					function()
-						require("coverage").toggle_branch_info()
+						require("coverage").toggle_branch_hits()
 					end,
-					desc = "Toggle branch overlay",
+					desc = "Toggle branch hits",
 				}
 
 				-- Sign navigation (] / [ convention)
