@@ -12,7 +12,7 @@ return {
 			opts = {
 				icons = {
 					Tests = "󰗇",
-					Coverage = "",
+					Coverage = "",
 				},
 			},
 		},
@@ -53,6 +53,44 @@ return {
 						require("coverage").load(true)
 					end,
 					desc = "Load and show coverage",
+				}
+
+				-- Sign navigation (] / [ convention)
+				maps.n["]Cu"] = {
+					function()
+						require("coverage").jump_next("uncovered")
+					end,
+					desc = "Next uncovered line",
+				}
+				maps.n["[Cu"] = {
+					function()
+						require("coverage").jump_prev("uncovered")
+					end,
+					desc = "Prev uncovered line",
+				}
+				maps.n["]Cc"] = {
+					function()
+						require("coverage").jump_next("covered")
+					end,
+					desc = "Next covered line",
+				}
+				maps.n["[Cc"] = {
+					function()
+						require("coverage").jump_prev("covered")
+					end,
+					desc = "Prev covered line",
+				}
+				maps.n["]Cp"] = {
+					function()
+						require("coverage").jump_next("partial")
+					end,
+					desc = "Next partial line",
+				}
+				maps.n["[Cp"] = {
+					function()
+						require("coverage").jump_prev("partial")
+					end,
+					desc = "Prev partial line",
 				}
 			end,
 		},
