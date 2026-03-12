@@ -44,12 +44,6 @@ return {
 					end,
 					desc = "Toggle coverage",
 				}
-				maps.n[coverage_prefix .. "s"] = {
-					function()
-						require("coverage").summary()
-					end,
-					desc = "Show coverage summary",
-				}
 				maps.n[coverage_prefix .. "r"] = {
 					function()
 						require("coverage").report()
@@ -61,6 +55,12 @@ return {
 						require("coverage").heatmap()
 					end,
 					desc = "Show coverage heatmap",
+				}
+				maps.n[coverage_prefix .. "o"] = {
+					function()
+						require("coverage").browser()
+					end,
+					desc = "Open coverage in browser",
 				}
 				maps.n[coverage_prefix .. "c"] = {
 					function()
