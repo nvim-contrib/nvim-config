@@ -1,3 +1,10 @@
+--- Check whether a directory is a Ginkgo suite (has suite_test.go).
+local function is_ginkgo_suite(name, rel_path, root)
+	local dir = root .. "/" .. rel_path
+	return vim.fn.filereadable(dir .. "/suite_test.go") == 1
+		or vim.fn.filereadable(dir .. "/" .. name .. "_suite_test.go") == 1
+end
+
 return {
 	"nvim-neotest/neotest",
 	dependencies = {
@@ -7,32 +14,6 @@ return {
 	opts = function(_, opts)
 		if not opts.adapters then
 			opts.adapters = {}
-		end
-
-		for _, adapter in ipairs(opts.adapters) do
-			if adapter.name == "neotest-golang" or adapter.name == "neotest-go" then
-				local original_filter_dir = adapter.filter_dir
-				---Filter directories when searching for test files
-				---@async
-				---@param name string Name of directory
-				---@param rel_path string Path to directory, relative to root
-				---@param root string Root directory of project
-				---@return boolean
-				adapter.filter_dir = function(name, rel_path, root)
-					local dir = root .. "/" .. rel_path
-					if
-							vim.fn.filereadable(dir .. "/suite_test.go") == 1
-							or vim.fn.filereadable(dir .. "/" .. name .. "_suite_test.go") == 1
-					then
-						return false
-					end
-					if original_filter_dir then
-						return original_filter_dir(name, rel_path, root)
-					end
-
-					return true
-				end
-			end
 		end
 
 		local core = require("astrocore")
@@ -48,11 +29,31 @@ return {
 			table.insert(ginkgo_opts.command, "-cover")
 			table.insert(ginkgo_opts.command, "-coverprofile=coverage.out")
 
-			-- after tests finish, convert coverage.out → coverage/lcov.info
 			opts.consumers = opts.consumers or {}
 			opts.consumers.coverage_go = require("coverage.neotest.go")
 		end
 
 		table.insert(opts.adapters, ginkgo_adapter.setup(ginkgo_opts))
+	end,
+	config = function(plugin, opts)
+		-- Patch neotest-golang/neotest-go filter_dir to skip Ginkgo suites.
+		-- This runs after all opts functions have merged, so every adapter
+		-- is guaranteed to be in the list.
+		for _, adapter in ipairs(opts.adapters or {}) do
+			if adapter.name == "neotest-golang" or adapter.name == "neotest-go" then
+				local original_filter_dir = adapter.filter_dir
+				adapter.filter_dir = function(name, rel_path, root)
+					if is_ginkgo_suite(name, rel_path, root) then
+						return false
+					end
+					if original_filter_dir then
+						return original_filter_dir(name, rel_path, root)
+					end
+					return true
+				end
+			end
+		end
+
+		require("neotest").setup(opts)
 	end,
 }
