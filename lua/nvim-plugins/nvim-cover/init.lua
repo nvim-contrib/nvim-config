@@ -50,6 +50,18 @@ return {
 					end,
 					desc = "Show coverage summary",
 				}
+				maps.n[coverage_prefix .. "r"] = {
+					function()
+						require("coverage").report()
+					end,
+					desc = "Show coverage report",
+				}
+				maps.n[coverage_prefix .. "m"] = {
+					function()
+						require("coverage").heatmap()
+					end,
+					desc = "Show coverage heatmap",
+				}
 				maps.n[coverage_prefix .. "c"] = {
 					function()
 						require("coverage").clear()
