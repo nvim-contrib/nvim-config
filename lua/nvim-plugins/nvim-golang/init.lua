@@ -16,30 +16,8 @@ return {
 			opts.adapters = {}
 		end
 
-		local core = require("astrocore")
-		local ginkgo_opts = core.plugin_opts("neotest-ginkgo")
-		local ginkgo_adapter = require("neotest-ginkgo")
-
-		-- enable coverage flags when nvim-coverage is available
-		local has_coverage, _ = pcall(require, "coverage.config")
-		if has_coverage then
-			if not ginkgo_opts.command then
-				ginkgo_opts.command = { "ginkgo", "run", "-v" }
-			end
-			table.insert(ginkgo_opts.command, "-cover")
-			table.insert(ginkgo_opts.command, "-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out")
-
-			opts.consumers = opts.consumers or {}
-			opts.consumers.coverage_go = require("coverage.neotest.go")
-		end
-
-		table.insert(opts.adapters, ginkgo_adapter.setup(ginkgo_opts))
-	end,
-	config = function(plugin, opts)
-		-- Patch neotest-golang/neotest-go filter_dir to skip Ginkgo suites.
-		-- This runs after all opts functions have merged, so every adapter
-		-- is guaranteed to be in the list.
-		for _, adapter in ipairs(opts.adapters or {}) do
+		-- Patch neotest-golang/neotest-go to skip Ginkgo suite directories.
+		for _, adapter in ipairs(opts.adapters) do
 			if adapter.name == "neotest-golang" or adapter.name == "neotest-go" then
 				local original_filter_dir = adapter.filter_dir
 				adapter.filter_dir = function(name, rel_path, root)
@@ -54,6 +32,24 @@ return {
 			end
 		end
 
-		require("neotest").setup(opts)
+		local core = require("astrocore")
+		local ginkgo_opts = core.plugin_opts("neotest-ginkgo")
+		local ginkgo_adapter = require("neotest-ginkgo")
+
+		-- enable coverage flags when nvim-coverage is available
+		local has_coverage, _ = pcall(require, "coverage.config")
+		if has_coverage then
+			if not ginkgo_opts.command then
+				ginkgo_opts.command = { "ginkgo", "run", "-v" }
+			end
+			table.insert(ginkgo_opts.command, "-cover")
+			table.insert(ginkgo_opts.command, "-coverprofile=coverage.out")
+			table.insert(ginkgo_opts.command, "--output-dir=" .. vim.fn.getcwd())
+
+			opts.consumers = opts.consumers or {}
+			opts.consumers.coverage_go = require("coverage.neotest.go")
+		end
+
+		table.insert(opts.adapters, ginkgo_adapter.setup(ginkgo_opts))
 	end,
 }
