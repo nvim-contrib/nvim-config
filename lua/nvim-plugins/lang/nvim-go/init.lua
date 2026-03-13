@@ -32,7 +32,7 @@ return {
 				table.insert(ginkgo_opts.command, "-coverprofile=coverage.out")
 
 				opts.consumers = opts.consumers or {}
-				opts.consumers.coverage = require("coverage.neotest.go")
+				opts.consumers.coverage_go = require("coverage.neotest.go")
 			end
 
 			table.insert(opts.adapters, ginkgo_adapter.setup(ginkgo_opts))
