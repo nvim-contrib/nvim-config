@@ -1,4 +1,5 @@
-# nvim-plugins
+# nvim-config
 
-The repository contains plugin configuration specifications for neovim. These
-specifications help manage the variety of plugins used in neovim.
+The repository contains opinionated AstroNvim plugin configuration specs for
+the `nvim-contrib` org. These specs wire up language tooling (Go, Rust) and
+test/coverage integrations as lazy.nvim plugin specifications.
