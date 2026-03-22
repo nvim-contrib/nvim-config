@@ -2,7 +2,7 @@ return {
 	{
 		"L3MON4D3/LuaSnip",
 		dependencies = {
-			"nvim-contrib/nvim-snippet",
+			"nvim-contrib/nvim-snippets",
 		},
 		config = function(plugin, opts)
 			require("astronvim.plugins.configs.luasnip")(plugin, opts)
