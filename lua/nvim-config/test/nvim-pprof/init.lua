@@ -10,7 +10,6 @@ return {
 			"AstroNvim/astroui",
 			opts = {
 				icons = {
-					Tests = "󰗇",
 					PProf = "",
 				},
 			},
@@ -30,11 +29,7 @@ return {
 				local astroui = require("astroui")
 				local maps = opts.mappings
 
-				local tests_prefix = "<Leader>T"
-				local pprofile_prefix = tests_prefix .. "P"
-
-				-- INFO: Compatibility with `neotest` and `vim-test`
-				maps.n[tests_prefix] = { desc = astroui.get_icon("Tests", 1, true) .. "Tests" }
+				local pprofile_prefix = "<Leader>P"
 
 				maps.n[pprofile_prefix] = { desc = astroui.get_icon("PProf", 1, true) .. "PProf" }
 				maps.n[pprofile_prefix .. "l"] = {
