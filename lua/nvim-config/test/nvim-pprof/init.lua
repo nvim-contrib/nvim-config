@@ -62,6 +62,18 @@ return {
 					end,
 					desc = "Toggle line hints",
 				}
+				maps.n[pprofile_prefix .. "o"] = {
+					function()
+						require("pprof").start_server()
+					end,
+					desc = "Start pprof server",
+				}
+				maps.n[pprofile_prefix .. "O"] = {
+					function()
+						require("pprof").stop_server()
+					end,
+					desc = "Stop pprof server",
+				}
 				maps.n[pprofile_prefix .. "c"] = {
 					function()
 						require("pprof").clear()
