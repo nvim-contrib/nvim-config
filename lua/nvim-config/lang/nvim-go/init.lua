@@ -41,10 +41,10 @@ return {
 			-- inject coverage/pprof flags at run time so toggles take effect without restart
 			adapter.build_spec = function(args)
 				local extra = vim.list_extend({}, args and args.extra_args or {})
-				if has_coverage and vim.g.neotest_coverage_enabled ~= false then
+				if has_coverage and vim.g.coverage_collection_enabled == true then
 					vim.list_extend(extra, { "--cover", "--coverprofile=coverage.out" })
 				end
-				if has_pprof and vim.g.neotest_pprof_enabled ~= false then
+				if has_pprof and vim.g.pprof_collection_enabled == true then
 					vim.list_extend(extra, { "--cpuprofile=cpu.pprof", "--memprofile=mem.pprof" })
 				end
 				return original_build_spec(vim.tbl_extend("force", args or {}, { extra_args = extra }))

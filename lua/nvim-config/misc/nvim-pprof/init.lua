@@ -82,9 +82,9 @@ return {
 				}
 				maps.n[pprofile_prefix .. "e"] = {
 					function()
-						vim.g.neotest_pprof_enabled = vim.g.neotest_pprof_enabled == false
+						vim.g.pprof_collection_enabled = not vim.g.pprof_collection_enabled
 						vim.notify(
-							"Pprof collection " .. (vim.g.neotest_pprof_enabled and "enabled" or "disabled"),
+							"Pprof collection " .. (vim.g.pprof_collection_enabled and "enabled" or "disabled"),
 							vim.log.levels.INFO
 						)
 					end,

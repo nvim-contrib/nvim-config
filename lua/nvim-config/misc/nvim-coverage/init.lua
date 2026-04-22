@@ -88,9 +88,9 @@ return {
 				}
 				maps.n[coverage_prefix .. "e"] = {
 					function()
-						vim.g.neotest_coverage_enabled = vim.g.neotest_coverage_enabled == false
+						vim.g.coverage_collection_enabled = not vim.g.coverage_collection_enabled
 						vim.notify(
-							"Coverage collection " .. (vim.g.neotest_coverage_enabled and "enabled" or "disabled"),
+							"Coverage collection " .. (vim.g.coverage_collection_enabled and "enabled" or "disabled"),
 							vim.log.levels.INFO
 						)
 					end,
