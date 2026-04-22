@@ -23,13 +23,12 @@ return {
 			local ginkgo_adapter = require("neotest-ginkgo")
 
 			local has_coverage, _ = pcall(require, "coverage.config")
-			local has_pprof, _ = pcall(require, "pprof.config")
-
 			if has_coverage then
 				opts.consumers = opts.consumers or {}
 				opts.consumers.coverage_go = require("coverage.neotest.go")
 			end
 
+			local has_pprof, _ = pcall(require, "pprof.config")
 			if has_pprof then
 				opts.consumers = opts.consumers or {}
 				opts.consumers.pprof_go = require("pprof.neotest.go")
